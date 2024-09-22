@@ -1,0 +1,74 @@
+JS)
+// Lista inicial de arquivos
+let arquivos = ["documento1.txt", "documento2.txt", "relatorio.pdf"];
+
+// Função para adicionar um novo arquivo à lista de backup
+function adicionarArquivo() {
+  let arquivo = document.getElementById("arquivoInput").value;
+  if (arquivo) {
+    arquivos.push(arquivo);
+    document.getElementById("arquivoInput").value = ""; // Limpar o campo de entrada
+    alert("Arquivo " + arquivo + " adicionado com sucesso!");
+  }
+}
+
+// Função para simular o backup
+function backup() {
+  let destino = document.getElementById("destino").value; // Obter o destino escolhido
+  let output = document.getElementById("output");
+  output.innerHTML = "Iniciando backup para " + destino + "...<br>";
+
+  let dataBackup = new Date().toLocaleString(); // Data e hora do backup
+  let historico = JSON.parse(localStorage.getItem("historicoBackups")) || []; // Obter o histórico de backups do LocalStorage
+
+  arquivos.forEach(function(arquivo) {
+    // Simular uma chance de falha de 20%
+    let sucesso = Math.random() > 0.0; // 80% de chance de sucesso
+    if (sucesso) {
+      output.innerHTML += "Backup do arquivo " + arquivo + " concluído.<br>";
+      historico.push({ arquivo: arquivo, data: dataBackup, destino: destino, status: "Sucesso" });
+    } else {
+      output.innerHTML += "Falha ao fazer backup do arquivo " + arquivo + ".<br>";
+      historico.push({ arquivo: arquivo, data: dataBackup, destino: destino, status: "Falha" });
+    }
+  });
+
+  localStorage.setItem("historicoBackups", JSON.stringify(historico)); // Salvar o histórico no LocalStorage
+  output.innerHTML += "<br>Backup concluído!";
+  atualizarLog(); // Atualizar o histórico de backups
+}
+
+// Função para atualizar o log de histórico em uma tabela
+function atualizarLog() {
+  let log = document.getElementById("log");
+  let historico = JSON.parse(localStorage.getItem("historicoBackups")) || [];
+
+  log.innerHTML = ""; // Limpar o conteúdo do log
+
+  historico.forEach(function(item) {
+    let row = document.createElement("tr");
+    row.innerHTML = "<td>" + item.arquivo + "</td><td>" + item.data + "</td><td>" + item.destino + "</td><td>" + item.status + "</td>";
+    log.appendChild(row);
+  });
+}
+
+// Função para exportar o histórico como CSV
+function exportarCSV() {
+  let historico = JSON.parse(localStorage.getItem("historicoBackups")) || [];
+  let csvContent = "data:text/csv;charset=utf-8,Arquivo,Data,Destino,Status\n";
+
+  historico.forEach(function(item) {
+    csvContent += item.arquivo + "," + item.data + "," + item.destino + "," + item.status + "\n";
+  });
+
+  let encodedUri = encodeURI(csvContent);
+  let link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", "historico_backup.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+// Chamada inicial para carregar o histórico de backups ao abrir a página
+atualizarLog();
