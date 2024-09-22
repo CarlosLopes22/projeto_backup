@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simulação de Backup em Cloud</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f0f0f0; }
+        .container { max-width: 600px; margin: auto; padding: 20px; background: white; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h2 { text-align: center; }
+        #output { margin-top: 20px; background-color: #eaeaea; padding: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        table, th, td { border: 1px solid black; }
+        th, td { padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Simulação de Backup Automático</h2>
+        
+        <!-- Adicionar Arquivos -->
+        <p>Adicionar arquivo para backup:</p>
+        <input type="text" id="arquivoInput" placeholder="Nome do arquivo">
+        <button onclick="adicionarArquivo()">Adicionar Arquivo</button>
+        <br><br>
+        
+        <!-- Escolher Destino -->
+        <p>Escolha o destino do backup:</p>
+        <select id="destino">
+            <option value="cloud">Nuvem</option>
+            <option value="local">Local</option>
+        </select>
+        <br><br>
+        
+        <!-- Executar Backup -->
+        <button onclick="backup()">Executar Backup</button>
+        
+        <!-- Exportar CSV -->
+        <button onclick="exportarCSV()">Exportar CSV</button>
+        
+        <!-- Resultados -->
+        <div id="output"></div>
+
+        <!-- Histórico de Backups em Tabela -->
+        <h3>Histórico de Backups</h3>
+        <table id="historicoTabela">
+            <thead>
+                <tr>
+                    <th>Arquivo</th>
+                    <th>Data</th>
+                    <th>Destino</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="log"></tbody>
+        </table>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
+
