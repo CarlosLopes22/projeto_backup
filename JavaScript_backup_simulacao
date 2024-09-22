@@ -22,7 +22,6 @@ function backup() {
   let historico = JSON.parse(localStorage.getItem("historicoBackups")) || []; // Obter o histórico de backups do LocalStorage
 
   arquivos.forEach(function(arquivo) {
-    // Simular uma chance de falha de 20%
     let sucesso = Math.random() > 0.0; // 80% de chance de sucesso
     if (sucesso) {
       output.innerHTML += "Backup do arquivo " + arquivo + " concluído.<br>";
